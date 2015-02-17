@@ -86,7 +86,7 @@ public class MySqlDb implements DBAccessorStrategy{
     public Map getRecordByID(String table, String primaryKeyField, Object keyValue, boolean closeConnection)
 	throws Exception
 	{
-		Statement stmt = null;
+		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		ResultSetMetaData metaData = null;
 		final Map record=new HashMap();
@@ -94,16 +94,11 @@ public class MySqlDb implements DBAccessorStrategy{
 		// do this in an excpetion handler so that we can depend on the
 		// finally clause to close the connection
 		try {
-			stmt = conn.createStatement();
-			String sql2;
-
-			if(keyValue instanceof String){
-				sql2 = "= '" + keyValue + "'";}
-			else {
-				sql2 = "=" + keyValue;}
-
-			final String sql="SELECT * FROM " + table + " WHERE " + primaryKeyField + sql2;
-			rs = stmt.executeQuery(sql);
+			String sql = "Select * From " + table + "WHERE " + primaryKeyField + " = ?";
+                        pstmt = conn.prepareStatement(sql);
+			pstmt.setObject(1, keyValue);
+                        
+			rs = pstmt.executeQuery(sql);
 			metaData = rs.getMetaData();
 			metaData.getColumnCount();
 			final int fields=metaData.getColumnCount();
@@ -120,7 +115,7 @@ public class MySqlDb implements DBAccessorStrategy{
 			throw e;
 		} finally {
 			try {
-				stmt.close();
+				pstmt.close();
 				if(closeConnection) conn.close();
 			} catch(SQLException e) {
 				throw e;

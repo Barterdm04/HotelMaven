@@ -3,7 +3,13 @@
     Created on : Feb 10, 2015, 12:30:14 PM
     Author     : DB7
 --%>
-
+<%
+ Object objData = request.getAttribute("hotelList");
+ if(objData == null){
+     response.sendRedirect("/FirstMavenProject/HotelController");
+ }
+ %>
+ 
 <%@page import="java.util.ArrayList"%>
 <%@page import="hotel.model.Hotel"%>
 <%@page import="java.util.List"%>

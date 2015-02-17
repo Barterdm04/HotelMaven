@@ -42,6 +42,9 @@ public class HotelController extends HttpServlet {
             throws ServletException, IOException, Exception {
         response.setContentType("text/html;charset=UTF-8");
         
+        //String username = request.getServletContext().getInitParameter("username");
+        
+        
         //create new hotel service
         HotelService hs = new HotelService();
         RequestDispatcher view;
