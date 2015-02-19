@@ -15,8 +15,7 @@ import java.util.List;
 public class HotelService {
     private IHotelDAO hotelDao;
     
-    public HotelService(){
-        DBAccessorStrategy db = new MySqlDb();
+    public HotelService(DBAccessorStrategy db){
         hotelDao = new HotelDAO(db);
     }
     
@@ -32,48 +31,7 @@ public class HotelService {
         hotelDao.SaveHotel(hotel);
     }
     
-    public void deleteHotelbyId(Hotel hotel) throws Exception{
-        hotelDao.DeleteHotelById(hotel);
-    }
-    
-    public static void main(String[] args) throws IllegalArgumentException, ClassNotFoundException, SQLException, Exception {
-        HotelService hotelService = new HotelService();
-        
-        System.out.println("Get all hotels: \n");
-        for (Hotel hotel : hotelService.getAllHotels()){
-            System.out.println(hotel);
-        }
-        
-        Hotel newHotel = new Hotel("New Hotel", "123 Fake Street", "Fakeville", "WI", "53000", "NO NOTES");
-        
-        System.out.println("Add new hotel: \n");
-        hotelService.saveHotel(newHotel);
-        newHotel.setHotelId(6);
-        
-        System.out.println("Get all hotels: \n");
-        for (Hotel hotel : hotelService.getAllHotels()){
-            System.out.println(hotel);
-        }
-        
-        System.out.println("Update a hotel \n");
-        
-        for(Hotel hotel : hotelService.getAllHotels()){
-            if(hotel.getHotelId() == 3){
-                hotel.setHotelName("UPDATED HOTEL NAME");
-                hotelService.saveHotel(hotel);
-            }
-        }
-            
-        for (Hotel hotel : hotelService.getAllHotels()){
-            System.out.println(hotel);
-        }
-        
-        System.out.println("Delete a hotel \n");
-        hotelService.deleteHotelbyId(newHotel);
-        for (Hotel hotel : hotelService.getAllHotels()){
-            System.out.println(hotel);
-        }
-        
-    }
-    
+    public void deleteHotelbyId(Hotel hotel, String deleteFromKey) throws Exception{
+        hotelDao.DeleteHotel(hotel, deleteFromKey);
+    }    
 }

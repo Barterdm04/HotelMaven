@@ -17,7 +17,7 @@ public interface IHotelDAO {
     public abstract void setDb(DBAccessorStrategy db);
     public abstract List<Hotel> getAllHotels() throws Exception;
     public abstract void SaveHotel(Hotel hotel) throws Exception;
-    public abstract void DeleteHotelById(Hotel hotel) throws Exception;
+    public abstract void DeleteHotel(Hotel hotel, String deleteKey) throws Exception;
     public abstract Hotel getHotelByID(int id) throws Exception;
     
 }

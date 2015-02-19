@@ -8,6 +8,16 @@
  if(objData == null){
      response.sendRedirect("/FirstMavenProject/HotelController");
  }
+ String loggedIn;
+ String loginField;
+ Object user = session.getAttribute("sessionUser");
+ if(user == null){
+     loginField = " <input type='text' name='sessionName' placeholder='Log In'><input type='submit' name='submit' value='Submit'>";
+     loggedIn = "";
+ } else {
+     loggedIn = "Welcome " + user.toString() + " <a href='HotelController?action=logOut'>(Log Out)</a>";
+     loginField = "";
+ }
  %>
  
 <%@page import="java.util.ArrayList"%>
@@ -36,7 +46,8 @@
     </head>
     
     <body>
-        <h3>Hotel Directory</h3>
+        <h3>Hotel Directory - Session Count: ${activeSessionCount}</h3>
+        <form method="POST" action='<%= request.getContextPath() + "/HotelController?action=logIn"%>'><%= loginField %><%=loggedIn%></form>
         <div id="tabs">
             <ul>
                 <c:forEach var="hotel" items="${hotelList}" varStatus="rowCount">

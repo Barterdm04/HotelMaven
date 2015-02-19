@@ -27,14 +27,26 @@ public class MySqlDb implements DBAccessorStrategy{
     private Statement stmt;
     private ResultSet rs;
     
+    private String driverClassName;
+    private String url;
+    private String userName;
+    private String password;
+
+    public MySqlDb(String driverClassName, String url, String userName, String password) {
+        this.driverClassName = driverClassName;
+        this.url = url;
+        this.userName = userName;
+        this.password = password;
+    }
+    
     @Override
-    public void openConnection(String driverClassName, String url, String username, String password) throws SQLException, ClassNotFoundException {
+    public void openConnection() throws SQLException, ClassNotFoundException {
         String msg = "Error: url is null or zero length!";
 	if( url == null || url.length() == 0 ) throw new IllegalArgumentException(msg);
-	username = (username == null) ? "" : username;
+	userName = (userName == null) ? "" : userName;
 	password = (password == null) ? "" : password;
 	Class.forName (driverClassName);
-	conn = DriverManager.getConnection(url, username, password);
+	conn = DriverManager.getConnection(url, userName, password);
     }
 
     @Override
@@ -319,6 +331,7 @@ public class MySqlDb implements DBAccessorStrategy{
 		final String finalSQL=sql.toString();
 		return conn_loc.prepareStatement(finalSQL);
     }
+
     
     
 }

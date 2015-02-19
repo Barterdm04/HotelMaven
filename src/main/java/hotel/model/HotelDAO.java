@@ -7,7 +7,6 @@ package hotel.model;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +27,7 @@ public class HotelDAO implements IHotelDAO {
     
     @Override
     public List<Hotel> getAllHotels() throws Exception {
-        db.openConnection("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/hoteldb", "root", "admin");
+        db.openConnection();
         
         List<Map> rawData = new ArrayList<Map>();
         List<Hotel> records = new ArrayList<Hotel>();
@@ -61,7 +60,7 @@ public class HotelDAO implements IHotelDAO {
     }
 
     public Hotel getHotelByID(int id) throws Exception{
-        db.openConnection("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/hoteldb", "root", "admin");
+        db.openConnection();
         
         String tableName = "HOTEL";
         String primaryKeyField = "hotel_id";
@@ -90,7 +89,7 @@ public class HotelDAO implements IHotelDAO {
     
     @Override
     public void SaveHotel(Hotel hotel) throws Exception{
-        db.openConnection("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/hoteldb", "root", "admin");
+        db.openConnection();
         
         String tableName = "HOTEL";
         List<String> fieldList =
@@ -131,11 +130,11 @@ public class HotelDAO implements IHotelDAO {
     }
     
     @Override
-    public void DeleteHotelById(Hotel hotel) throws Exception {
-        db.openConnection("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/hoteldb", "root", "admin");
+    public void DeleteHotel(Hotel hotel, String deleteFromKey) throws Exception {
+        db.openConnection();
         
         try {
-            db.deleteRecords("Hotel", "hotel_id", hotel.getHotelId(), true);
+            db.deleteRecords("Hotel", deleteFromKey, hotel.getHotelId(), true);
         } catch (SQLException e1) {
             throw new SQLException(e1.getMessage(), e1);
 
@@ -144,10 +143,12 @@ public class HotelDAO implements IHotelDAO {
         }
     }
     
+    @Override
     public DBAccessorStrategy getDb() {
         return db;
     }
 
+    @Override
     public void setDb(DBAccessorStrategy db) {
         this.db = db;
     }

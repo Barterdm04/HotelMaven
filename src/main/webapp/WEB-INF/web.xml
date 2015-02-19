@@ -4,15 +4,38 @@
 	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
 	 version="3.1">
-<!--    <servlet>
+    <servlet>
+        <servlet-name>HotelController</servlet-name>
+        <servlet-class>hotel.controller.HotelController</servlet-class>
+    </servlet>
+    <servlet-mapping>
         <servlet-name>HotelController</servlet-name>
         <url-pattern>/HotelController</url-pattern>
-    </servlet>
+    </servlet-mapping>
+    <context-param>
+        <param-name>driverName</param-name>
+        <param-value>com.mysql.jdbc.Driver</param-value>
+    </context-param>
     <context-param>
         <param-name>url</param-name>
-        <param-value>jdbc:mysql://localhost:3006/mydb</param-value>
+        <param-value>jdbc:mysql://localhost:3306/hoteldb</param-value>
     </context-param>
-    -->
+    <context-param>
+        <param-name>userName</param-name>
+        <param-value>root</param-value>
+    </context-param>
+    <context-param>
+        <param-name>pass</param-name>
+        <param-value>admin</param-value>
+    </context-param>
+    <context-param>
+        <param-name>dbStrategy</param-name>
+        <param-value>hotel.model.MySqlDb</param-value>
+    </context-param>
+    <listener>
+        <listener-class>hotel.model.MySessionListener</listener-class>
+    </listener>
+        
     <session-config>
         <session-timeout>
             30
