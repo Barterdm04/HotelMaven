@@ -39,15 +39,12 @@
         
         <title>Hotel List</title>
         
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-        <script src='<%= request.getContextPath() + "/Content/Scripts/hotels.js"%>' type="text/javascript"></script>
     </head>
     
     <body>
+        <div class="container">
         <h3>Hotel Directory - Session Count: ${activeSessionCount}</h3>
-        <form method="POST" action='<%= request.getContextPath() + "/HotelController?action=logIn"%>'><%= loginField %><%=loggedIn%></form>
+        <form method="POST" action='<%= request.getContextPath() + "/HotelController?action=logIn"%>'><%= loginField %><%=loggedIn%></form><br>
         <div id="tabs">
             <ul>
                 <c:forEach var="hotel" items="${hotelList}" varStatus="rowCount">
@@ -86,7 +83,7 @@
                                         </tr>
                                         <tr>
                                             <td>Notes</td>
-                                            <td><textarea name="notes" value="${hotel.notes}" cols="40" rows="6">${hotel.notes}</textarea></td>
+                                            <td><textarea name="notes" value="${hotel.notes}" cols="25" rows="6">${hotel.notes}</textarea></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -105,38 +102,49 @@
         <div id="addHotelForm">
             <br>
             <form id="formAdd" name="formAdd" method="POST" action='<%= request.getContextPath() + "/HotelController?action=saveHotel"%>'>
-                <table style='width:60%'>
-                        <thead>
-                        <th>Hotel ID</th>
-                        <th>Hotel Name</th>
-                        <th>Street Address</th>
-                        <th>City</th>
-                        <th>State</th>
-                        <th>Postal Code</th>
-                        <th>Notes</th>
-                        </thead>
+                <table>
                         <tbody>
-                            <tr>
-                                <td>Not yet assigned<input type="text" name="hotelId" value="0" hidden></td>
-                                <td><input type="text" name="hotelName" placeholder="Hotel Name"></td>
-                                <td><input type="text" name="streetAddress" placeholder="Street Address"></td>
-                                <td><input type="text" name="city" placeholder="City"></td>
-                                <td><input type="text" name="state" placeholder="State"></td>
-                                <td><input type="text" name="postalCode" placeholder="Zip Code"></td>
-                                <td><input type="text" name="notes" placeholder="Notes"></td>
-                            </tr>
-                        </tbody>
+                                        <tr>
+                                            <td>Hotel ID</td>
+                                            <td>Not yet assigned<input type="text" name="hotelId" value="0" hidden></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Hotel Name</td>
+                                            <td><input type="text" name="hotelName" placeholder="Hotel Name"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Street Address</td>
+                                            <td><input type="text" name="streetAddress" placeholder="Street Address"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>City</td>
+                                            <td><input type="text" name="city" placeholder="City"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>State</td> 
+                                            <td><input type="text" name="state" placeholder="State"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Postal Code</td>
+                                            <td><input type="text" name="postalCode" placeholder="Zip Code"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Notes (optional)</td>
+                                            <td><input type="text" name="notes" placeholder="Notes"  cols="25" rows="6"></td>
+                                        </tr>
+                                    </tbody>
                     </table>
                 <br>
                 <input type="submit" name="submit" class="btn btn-lg btn-success" value="Save Hotel" />
+                <input type="button" name="cancelAdd" id="cancelAdd" value="Cancel" class="btn btn-lg btn-danger">
             </form>
+            
         </div>
+        </div>   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+        <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
+        <script src='<%= request.getContextPath() + "/Content/Scripts/hotels.js"%>' type="text/javascript"></script>
     </body>
 </html>
-<script>
-    $(function(){
-        $(".confirm").click(function(){
-        return window.confirm("Are you sure you want to delete this Hotel?");
-    });
-    });
-</script>
