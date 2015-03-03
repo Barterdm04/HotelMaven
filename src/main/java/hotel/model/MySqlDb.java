@@ -95,7 +95,7 @@ public class MySqlDb implements DBAccessorStrategy{
     }
     
     @Override
-    public Map getRecordByID(String table, String primaryKeyField, Object keyValue, boolean closeConnection)
+    public Map getRecordByPrimaryKey(String table, String primaryKeyField, Object keyValue, boolean closeConnection)
 	throws Exception
 	{
 		PreparedStatement pstmt = null;

@@ -44,7 +44,34 @@
     <body>
         <div class="container">
         <h3>Hotel Directory - Session Count: ${activeSessionCount}</h3>
-        <form method="POST" action='<%= request.getContextPath() + "/HotelController?action=logIn"%>'><%= loginField %><%=loggedIn%></form><br>
+        <div class='row'>
+            <div class='col-md-6'>
+                <form method="POST" action='<%= request.getContextPath() + "/HotelController?action=logIn"%>'><%= loginField %><%=loggedIn%></form>
+                <br>
+                <form method="POST" action='<%= request.getContextPath() + "/HotelController?action=reorder"%>'>
+                    Order By:
+                    <select name='order'>
+                        <option value="hotelId">Hotel ID</option>
+                        <option value="hotelName">Hotel Name</option>
+                        <option value="city">City</option>
+                        <option value="state">State</option>
+                    </select>
+                    <input type="submit" name="submit" class="btn btn-sm btn-warning" value='Go'>
+                </form>
+            </div>
+            <div class='col-md-6 pull-right'>
+                <form method="POST" action='<%= request.getContextPath() + "/HotelController?action=search"%>' class='pull-right'>
+                    Search for keyword: <br><input type='text' name='searchTerm' placeholder='Search'><br>in 
+                    <select name='searchColumn'>
+                        <option value="hotelId" selected>Hotel ID</option>
+                        <option value="hotelName">Hotel Name</option>
+                        <option value="city">City</option>
+                        <option value="state">State</option>
+                    </select>
+                    <input type="submit" name="submit" class="btn btn-md btn-warning" value='Search'>
+                </form>
+            </div>
+        </div>
         <div id="tabs">
             <ul>
                 <c:forEach var="hotel" items="${hotelList}" varStatus="rowCount">
@@ -83,7 +110,7 @@
                                         </tr>
                                         <tr>
                                             <td>Notes</td>
-                                            <td><textarea name="notes" value="${hotel.notes}" cols="25" rows="6">${hotel.notes}</textarea></td>
+                                            <td><textarea name="notes" value="${hotel.notes}" cols="19" rows="2">${hotel.notes}</textarea></td>
                                         </tr>
                                     </tbody>
                                 </table>

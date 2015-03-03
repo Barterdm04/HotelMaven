@@ -19,8 +19,12 @@ public class HotelService {
         hotelDao = new HotelDAO(db);
     }
     
-    public List<Hotel> getAllHotels() throws Exception{
-        return hotelDao.getAllHotels();
+    public List<Hotel> getAllHotels(String orderByField) throws Exception{
+        return hotelDao.getAllHotels(orderByField);
+    }
+    
+    public List<Hotel> getHotelsBySearch(String searchField, String searchValue, String orderByField) throws Exception{
+        return hotelDao.getHotelsBySearch(searchField, searchValue, orderByField);
     }
     
     public Hotel getHotelByID(int id) throws Exception{

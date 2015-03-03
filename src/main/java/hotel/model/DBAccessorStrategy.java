@@ -20,6 +20,6 @@ public interface DBAccessorStrategy {
     public abstract boolean insertRecord(String tableName, List<String> fieldList, List<Object> valueList, boolean closeConnection) throws Exception;
     public abstract int updateRecords(String tableName, List<String> fieldList, List<Object> valueList, String whereField, Object whereValue, boolean closeConnection) throws Exception;
     public abstract int deleteRecords(String tableName, String whereField, Object whereValue, boolean closeConnection) throws Exception;
-    public abstract Map getRecordByID(String table, String primaryKeyField, Object keyValue, boolean closeConnection) throws Exception;
+    public abstract Map getRecordByPrimaryKey(String table, String primaryKeyField, Object keyValue, boolean closeConnection) throws Exception;
 
 }

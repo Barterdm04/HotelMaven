@@ -33,9 +33,10 @@ public class HotelController extends HttpServlet {
     private final static String RESULT_PAGE = "/hotel/hotels.jsp";  
     private final static String SAVE_HOTEL = "saveHotel";
     private final static String DELETE_HOTEL = "deleteHotel";
-    private final static String DELETE_FROM_FIELD = "hotel_id";
     private final static String LOGIN = "logIn";
     private final static String LOGOUT = "logOut";
+    private final static String REORDER = "reorder";
+    private final static String SEARCH = "search";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -67,6 +68,9 @@ public class HotelController extends HttpServlet {
         //create new hotel service
         HotelService hs = new HotelService(db);
         RequestDispatcher view;
+        if(session.getAttribute("orderField") == null){
+            session.setAttribute("orderField", "hotel_id");
+        };        
         
         if(request.getParameter("action") != null){
             switch(request.getParameter("action")){
@@ -86,7 +90,7 @@ public class HotelController extends HttpServlet {
                     Hotel hotelDelete = new Hotel();
 
                     hotelDelete.setHotelId(Integer.parseInt(request.getParameter("hotelId")));
-                    hs.deleteHotelbyId(hotelDelete, DELETE_FROM_FIELD );
+                    hs.deleteHotelbyId(hotelDelete, "hotel_id" );
                     break;
                 case LOGIN:
                     String sessionUser = request.getParameter("sessionName");
@@ -94,13 +98,56 @@ public class HotelController extends HttpServlet {
                     break;
                 case LOGOUT:
                     session.invalidate();
+                    break;                  
+                case REORDER:
+                    switch(request.getParameter("order")){
+                        case "hotelId":
+                            session.setAttribute("orderField", "hotel_id");
+                            break;
+                        case "hotelName":
+                            session.setAttribute("orderField", "hotel_name");
+                            break;
+                        case "city":
+                            session.setAttribute("orderField", "city");
+                            break;
+                        case "state":
+                            session.setAttribute("orderField", "state");
+                        default:
+                            break;
+                    }
+                    break;
+                case SEARCH:
+                    String searchTerm = request.getParameter("searchTerm");
+                    String searchField;
+                    switch(request.getParameter("searchColumn")){
+                        case "hotelId":
+                            searchField = "hotel_id";
+                            break;
+                        case "hotelName":
+                            searchField = "hotel_name";
+                            break;
+                        case "city":
+                            searchField = "city";
+                            break;
+                        case "state":
+                            searchField = "state";
+                            break;
+                        default:
+                            searchField = "hotel_id";
+                            break;
+                    }
+                    List<Hotel> hotelList = hs.getHotelsBySearch(searchField, searchTerm, session.getAttribute("orderField").toString());
+                    request.setAttribute("hotelList", hotelList);
+                    
+                    view = request.getRequestDispatcher(RESULT_PAGE);
+                    view.forward(request, response);
                     break;
                 default:
                     break;
             }     
         }
            
-        List<Hotel> hotelList = hs.getAllHotels();
+        List<Hotel> hotelList = hs.getAllHotels(session.getAttribute("orderField").toString());
         request.setAttribute("hotelList", hotelList);
         String sessionCount = Integer.toString(sl.getTotalSessions());
         request.setAttribute("activeSessionCount", sessionCount);

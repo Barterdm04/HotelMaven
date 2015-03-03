@@ -26,14 +26,14 @@ public class HotelDAO implements IHotelDAO {
     }
     
     @Override
-    public List<Hotel> getAllHotels() throws Exception {
+    public List<Hotel> getAllHotels(String orderByField) throws Exception {
         db.openConnection();
         
         List<Map> rawData = new ArrayList<Map>();
         List<Hotel> records = new ArrayList<Hotel>();
         
         try{
-            rawData = db.findRecords("Select * From Hotel", true);
+            rawData = db.findRecords("Select * From Hotel Order By " + orderByField, true);
         }
         catch (SQLException e) {
             throw new SQLException(e.getMessage(), e);
@@ -59,6 +59,41 @@ public class HotelDAO implements IHotelDAO {
         return records;
     }
 
+    @Override
+    public List<Hotel> getHotelsBySearch(String searchField, String searchValue, String orderByField) throws Exception {
+        db.openConnection();
+        
+        List<Map> rawData = new ArrayList<Map>();
+        List<Hotel> records = new ArrayList<Hotel>();
+        
+        try{
+            rawData = db.findRecords("Select * From Hotel Where " + searchField + " LIKE '%" + searchValue + "%' ORDER BY " + orderByField, true);
+        }
+        catch (SQLException e) {
+            throw new SQLException(e.getMessage(), e);
+
+        } catch (Exception e) {
+            throw new ClassNotFoundException(e.getMessage(), e);
+        }
+        
+        Hotel hotel = null;
+        
+        for (Map recMap : rawData){
+            hotel = new Hotel();
+            hotel.setHotelId(Integer.valueOf(recMap.get("hotel_id").toString()));
+            hotel.setHotelName(recMap.get("hotel_name").toString());
+            hotel.setStreetAddress(recMap.get("street_address").toString());
+            hotel.setCity(recMap.get("city").toString());
+            hotel.setState(recMap.get("state").toString());
+            hotel.setPostalCode(recMap.get("postal_code").toString());
+            hotel.setNotes(recMap.get("notes").toString());
+            
+            records.add(hotel);
+        }
+        return records;
+    }
+    
+    @Override
     public Hotel getHotelByID(int id) throws Exception{
         db.openConnection();
         
@@ -67,7 +102,7 @@ public class HotelDAO implements IHotelDAO {
         
         Map recMap;
         try {
-            recMap = db.getRecordByID(tableName, primaryKeyField, id, true);
+            recMap = db.getRecordByPrimaryKey(tableName, primaryKeyField, id, true);
         } catch (SQLException e1) {
             throw new SQLException(e1.getMessage(), e1);
 
